@@ -1,0 +1,153 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local localPlayer = Players.LocalPlayer
+local camera = workspace.CurrentCamera
+
+-- CONFIGURATION
+local smoothness = 0
+local circleRadiusPixels = 150
+local ringThickness = 4
+local ringYPositionOffset = 0
+
+-- GUI: Donut Ring
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "AimCircle"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = localPlayer:WaitForChild("PlayerGui")
+
+local circle = Instance.new("Frame")
+circle.Name = "AimZone"
+circle.Size = UDim2.new(0, circleRadiusPixels * 2, 0, circleRadiusPixels * 2)
+circle.Position = UDim2.new(0.5, -circleRadiusPixels, 0.5, -circleRadiusPixels + ringYPositionOffset)
+circle.BackgroundTransparency = 1
+circle.BorderSizePixel = 0
+circle.Parent = screenGui
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(1, 0)
+corner.Parent = circle
+
+local stroke = Instance.new("UIStroke")
+stroke.Thickness = ringThickness
+stroke.Color = Color3.new(1, 1, 1)
+stroke.Transparency = 0.2
+stroke.Parent = circle
+
+-- ESP Cache
+local espCache = {}
+local function createESP()
+	return {
+		Head = Drawing.new("Circle"),
+		Torso = Drawing.new("Line"),
+		LeftArm = Drawing.new("Line"),
+		RightArm = Drawing.new("Line"),
+		LeftLeg = Drawing.new("Line"),
+		RightLeg = Drawing.new("Line"),
+	}
+end
+
+local function clearESP(player)
+	if espCache[player] then
+		for _, drawing in pairs(espCache[player]) do
+			drawing:Remove()
+		end
+		espCache[player] = nil
+	end
+end
+
+-- Main Loop
+RunService.RenderStepped:Connect(function()
+	local screenCenter = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2 + ringYPositionOffset)
+	local closestPlayer = nil
+	local closestDist = math.huge
+
+	for _, player in ipairs(Players:GetPlayers()) do
+		if player ~= localPlayer and player.Character and player.Character:FindFirstChild("Head") then
+			local character = player.Character
+			local head = character.Head
+			local screenPos, onScreen = camera:WorldToViewportPoint(head.Position)
+
+			if onScreen then
+				local pos2D = Vector2.new(screenPos.X, screenPos.Y)
+				local dist = (pos2D - screenCenter).Magnitude
+
+				if dist <= circleRadiusPixels and dist < closestDist then
+					closestDist = dist
+					closestPlayer = player
+				end
+			end
+
+			-- ESP Drawing
+			local torso = character:FindFirstChild("UpperTorso") or character:FindFirstChild("Torso")
+			local leftArm = character:FindFirstChild("LeftUpperArm") or character:FindFirstChild("Left Arm")
+			local rightArm = character:FindFirstChild("RightUpperArm") or character:FindFirstChild("Right Arm")
+			local leftLeg = character:FindFirstChild("LeftUpperLeg") or character:FindFirstChild("Left Leg")
+			local rightLeg = character:FindFirstChild("RightUpperLeg") or character:FindFirstChild("Right Leg")
+
+			if not espCache[player] then
+				espCache[player] = createESP()
+			end
+
+			local esp = espCache[player]
+			local function toScreen(pos)
+				local screenPos, onScreen = camera:WorldToViewportPoint(pos)
+				return Vector2.new(screenPos.X, screenPos.Y), onScreen
+			end
+
+			local headPos, onScreen = toScreen(head.Position)
+			if onScreen then
+				esp.Head.Visible = true
+				esp.Head.Position = headPos
+				esp.Head.Radius = 6
+				esp.Head.Color = Color3.new(1, 1, 1)
+				esp.Head.Thickness = 1
+				esp.Head.Filled = false
+
+				local function updateLine(line, part1, part2)
+					if part1 and part2 then
+						local p1, s1 = toScreen(part1.Position)
+						local p2, s2 = toScreen(part2.Position)
+						if s1 and s2 then
+							line.Visible = true
+							line.From = p1
+							line.To = p2
+							line.Color = Color3.new(1, 1, 1)
+							line.Thickness = 1
+						else
+							line.Visible = false
+						end
+					else
+						line.Visible = false
+					end
+				end
+
+				updateLine(esp.Torso, head, torso)
+				updateLine(esp.LeftArm, torso, leftArm)
+				updateLine(esp.RightArm, torso, rightArm)
+				updateLine(esp.LeftLeg, torso, leftLeg)
+				updateLine(esp.RightLeg, torso, rightLeg)
+			else
+				for _, v in pairs(esp) do
+					v.Visible = false
+				end
+			end
+		elseif espCache[player] then
+			clearESP(player)
+		end
+	end
+
+	-- Auto Aim
+	if closestPlayer and closestPlayer.Character then
+		local head = closestPlayer.Character:FindFirstChild("Head")
+		if head then
+			local camCF = camera.CFrame
+			local targetCF = CFrame.new(camCF.Position, head.Position)
+			camera.CFrame = camCF:Lerp(targetCF, smoothness)
+		end
+	end
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+	clearESP(player)
+end)
