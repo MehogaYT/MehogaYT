@@ -5,7 +5,7 @@ local localPlayer = Players.LocalPlayer
 local camera = workspace.CurrentCamera
 
 -- CONFIGURATION
-local smoothness = 0
+local smoothness = 0.1
 local circleRadiusPixels = 150
 local ringThickness = 4
 local ringYPositionOffset = 0
