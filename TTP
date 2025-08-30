@@ -1,0 +1,79 @@
+C. Konsep Dasar Pengindraan Jauh
+
+1. Pengertian
+Pengindraan jauh adalah ilmu dan teknik untuk memperoleh informasi tentang objek/gejala di permukaan bumi tanpa kontak langsung, menggunakan sensor dan wahana (satelit, pesawat, drone).
+
+2. Komponen Utama
+
+Sumber energi: biasanya sinar matahari.
+
+1.	Atmosfer
+Lapisan udara yang menyelimuti bumi, terdiri dari berbagai gas (seperti nitrogen, oksigen, karbon dioksida, dan lain-lain). Atmosfer berfungsi melindungi bumi dari radiasi berbahaya, mengatur suhu, dan memungkinkan adanya kehidupan.
+	2.	Objek
+Benda atau fenomena yang menjadi sasaran pengamatan. Dalam konteks penginderaan jauh, objek bisa berupa hutan, sawah, laut, bangunan, awan, atau apa pun yang berada di permukaan bumi.
+	3.	Sensor
+Alat atau instrumen yang digunakan untuk mendeteksi dan merekam informasi tentang objek. Sensor bisa berupa kamera, radar, scanner, atau satelit yang menangkap energi yang dipantulkan/dipancarkan oleh objek.
+	4.	Wahana
+Kendaraan atau media yang membawa sensor. Misalnya satelit, pesawat terbang, drone, atau bahkan balon udara yang digunakan untuk mengambil data dari udara/angkasa.
+	5.	Data
+Informasi yang dihasilkan dari sensor mengenai objek. Data ini bisa berupa citra (foto), angka, grafik, atau peta yang kemudian diolah untuk analisis.
+	6.	Pengguna
+Orang atau lembaga yang memanfaatkan data tersebut. Misalnya pemerintah, peneliti, petani, BMKG, perusahaan perkebunan, atau masyarakat umum untuk berbagai tujuan (perencanaan kota, mitigasi bencana, pertanian, dll).
+
+3. Kelebihan
+
+Mencakup wilayah luas.
+
+Dapat merekam daerah berbahaya/sulit dijangkau.
+
+Data dapat diperbarui secara berkala.
+
+4. Kegunaan
+
+Pemetaan wilayah.
+
+Pemantauan hutan, pertanian, perairan.
+
+Deteksi bencana alam.
+
+D. Konsep Dasar Sistem Informasi Geografis (SIG)
+
+1. Pengertian
+SIG adalah sistem berbasis komputer untuk mengumpulkan, menyimpan, mengolah, menganalisis, dan menyajikan data yang berhubungan dengan permukaan bumi.
+
+
+2. Komponen SIG
+
+Perangkat keras (hardware): komputer, GPS, scanner.
+
+Perangkat lunak (software): aplikasi pengolah data (misalnya ArcGIS, QGIS).
+
+Data: terdiri dari data spasial (peta, koordinat) dan data nonspasial (keterangan objek).
+
+Manusia: pengguna yang mengoperasikan dan menganalisis data.
+
+Metode: cara atau prosedur analisis data.
+
+3. Fungsi SIG
+
+Menyimpan dan mengelola data keruangan.
+
+Menyajikan informasi dalam bentuk peta digital.
+
+Membantu analisis spasial (misalnya perencanaan tata ruang, jalur transportasi, wilayah rawan bencana).
+
+4. Kegunaan SIG
+
+Perencanaan pembangunan.
+
+Pengelolaan sumber daya alam.
+
+Penanggulangan bencana.
+Analisis lingkungan.
+
+
+📌 Singkatnya:
+
+Pengindraan jauh = cara mendapatkan data/geoinformasi dari jarak jauh dengan sensor & citra.
+
+SIG = sistem komputer untuk mengolah dan menganalisis data spasial agar mudah dipahami dalam bentuk peta dan informasi
